@@ -14,9 +14,10 @@ resource "aws_vpc" "myapp" {
 # Add public subnets, make sure each zone have one subnet
 
 resource "aws_subnet" "webservers" {
-  count      = "${length(data.aws_availability_zones.azs.names)}"
-  vpc_id     = "${aws_vpc.myapp.id}"
-  cidr_block = "${var.web_cidrs[count.index]}"
+  count                   = "${length(data.aws_availability_zones.azs.names)}"
+  vpc_id                  = "${aws_vpc.myapp.id}"
+  cidr_block              = "${var.web_cidrs[count.index]}"
+  map_public_ip_on_launch = true
 
   tags {
     Name = "Webservers-${count.index + 1}"

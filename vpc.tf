@@ -1,5 +1,6 @@
 locals {
-  web_sub_ids = "${aws_subnet.webservers.*.id}"
+  web_sub_ids    = "${aws_subnet.webservers.*.id}"
+  web_sub_length = "${length(local.web_sub_ids)}"
 }
 
 resource "aws_vpc" "myapp" {
@@ -50,7 +51,8 @@ resource "aws_route_table" "web_rt" {
 # Attavh web_rt with Webservers subenets
 
 resource "aws_route_table_association" "web_rt" {
-  count          = "${length(local.web_sub_ids)}"
+  # count          = "${local.web_sub_length}"
+  count          = 2
   subnet_id      = "${local.web_sub_ids[count.index]}"
   route_table_id = "${aws_route_table.web_rt.id}"
 }
